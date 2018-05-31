@@ -1,8 +1,19 @@
 package org.uaq.app.learn.com.littleapp_rentice;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,15 +23,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainTutor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FragmentManager fragmentManager;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
+        fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_main_tutor);
+
+        recyclerView = findViewById(R.id.recyclerCards);
+        ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
+        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
+        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
+        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
+        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
+
+        ActividadAdapter adapter = new ActividadAdapter(listaActividades);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,6 +100,38 @@ public class MainTutor extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            LayoutInflater inflater = getLayoutInflater();
+            View web = inflater.inflate(R.layout.dialog_infoslegal,null);
+            WebView webView = web.findViewById(R.id.webLegals);
+            webView.loadUrl("file:///android_asset/flaticon.html");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
+            builder.setTitle("Creditos")
+                    .setView(web)
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+            Dialog dialog = builder.create();
+            dialog.show();
+            return true;
+        }else if(id == R.id.licencia){
+            LayoutInflater inflater = getLayoutInflater();
+            View web = inflater.inflate(R.layout.dialog_infoslegal,null);
+            WebView webView = web.findViewById(R.id.webLegals);
+            webView.loadUrl("file:///android_asset/apachecommons .html");
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
+            builder.setTitle("Licencia")
+                    .setView(web)
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+            Dialog dialog = builder.create();
+            dialog.show();
             return true;
         }
 
@@ -80,15 +143,32 @@ public class MainTutor extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        FragmentTransaction transaction =fragmentManager.beginTransaction();
         if (id == R.id.nav_juegos) {
-            // Handle the camera action
+            Intent gameIntent = new Intent(MainTutor.this,juegosactivity.class);
+            startActivity(gameIntent);
         } else if (id == R.id.nav_perfil) {
-
         } else if (id == R.id.nav_comentarios) {
+            try{
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "gta321.jaff@gmail.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Comentarios sobre la app");
+                startActivity(Intent.createChooser(emailIntent, null));
+            }catch (Exception e){
 
+            }
         } else if (id == R.id.nav_info) {
-
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
+            builder.setTitle("Información")
+                    .setMessage("Versión: 0.5.1 BETA \nAutores: Aplicaciones de bajo presupuesto")
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+            Dialog dialog = builder.create();
+            dialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

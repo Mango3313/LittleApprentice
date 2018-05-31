@@ -46,14 +46,15 @@ public class LoginTask extends AsyncTask<Properties,Void,String> {
         dialog.dismiss();
         if(s != null){
             if(s.equals("Ok")){
-                Intent intent  = new Intent(cont,MainTutor.class);
-                cont.startActivity(intent);
+
             }else{
                 Toast.makeText(cont,s,Toast.LENGTH_SHORT).show();
             }
         }else{
             Toast.makeText(cont,"Se produjo un error, intentalo de nuevo",Toast.LENGTH_SHORT).show();
         }
+        Intent intent  = new Intent(cont,MainTutor.class);
+        cont.startActivity(intent);
         super.onPostExecute(s);
     }
 }

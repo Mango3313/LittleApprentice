@@ -6,10 +6,10 @@
         android:orderInCategory="100"
         android:title="Reconocimientos"
         app:showAsAction="never">
-        <menu>
-            <item android:id="@+id/buss" android:title="Pack Bussiness"></item>
-            <item android:id="@+id/log" android:title="Pack Login"></item>
-            <item android:id="@+id/spr" android:title="Pack Spring"></item>
-        </menu>
     </item>
+    <item
+        android:id="@+id/licencia"
+        android:orderInCategory="200"
+        android:title="Licencia"
+        app:showAsAction="never"></item>
 </menu>

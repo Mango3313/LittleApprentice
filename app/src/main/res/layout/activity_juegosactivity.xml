@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="8dp"
+    tools:context=".juegosactivity">
+
+    <Button
+        android:id="@+id/btnRehil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/windmill"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="¡Sopla!"
+        android:paddingTop="8dp"
+        android:paddingBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnSpeak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/speak"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="Repetir palabras"
+        android:paddingBottom="32dp"
+        android:paddingTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/listen"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="Escucha las palabras"
+        android:paddingBottom="32dp"
+        android:paddingTop="8dp"/>
+</LinearLayout>

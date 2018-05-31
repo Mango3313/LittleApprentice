@@ -19,7 +19,11 @@
         <activity
             android:name=".MainTutor"
             android:label="@string/title_activity_main_tutor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".juegosactivity" />
+        <activity android:name=".Molino"></activity>
     </application>
-
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
 </manifest>
