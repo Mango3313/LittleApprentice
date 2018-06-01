@@ -8,35 +8,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.io.IOException;
 
 public class Molino extends AppCompatActivity {
 
     private ImageView molino;
-    private TextView textlvl;
     private MediaRecorder mRecorder = null;
     private ProgressBar progressBar;
-    private ImageView fin;
-    private RotateAnimation anFast,anMidFast,anMid,anMidLow,anLow,anIni;
+    private RotateAnimation anFast,anMid,anLow,anIni;
     boolean flag;
-    int waittoupdate = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molino);
         progressBar = findViewById(R.id.progressBar);
-        fin = findViewById(R.id.smileFinnish);
         progressBar.setMax(32767);
 
-        final Animation b = AnimationUtils.loadAnimation(Molino.this,R.anim.s_ganim);
         anIni = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         anIni.setRepeatCount(Animation.INFINITE);
         anIni.setDuration(800);
@@ -47,7 +39,7 @@ public class Molino extends AppCompatActivity {
         anFast.setInterpolator(new LinearInterpolator());
 
         anMid = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        anMid.setDuration(700);
+        anMid.setDuration(800);
         anMid.setRepeatCount(Animation.INFINITE);
         anMid.setInterpolator(new LinearInterpolator());
 
@@ -166,8 +158,6 @@ public class Molino extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Message ms = handler.obtainMessage();
-
                     while (flag) {
                         //bundle.putDouble("Amp", getAmplitude());
                         Message msj = handler.obtainMessage();
@@ -179,7 +169,7 @@ public class Molino extends AppCompatActivity {
 
                     }
                 }catch (Exception e){
-
+                    e.printStackTrace();
                 }
             }
         });
