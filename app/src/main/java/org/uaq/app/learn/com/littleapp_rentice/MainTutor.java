@@ -120,7 +120,7 @@ public class MainTutor extends AppCompatActivity
             LayoutInflater inflater = getLayoutInflater();
             View web = inflater.inflate(R.layout.dialog_infoslegal,null);
             WebView webView = web.findViewById(R.id.webLegals);
-            webView.loadUrl("file:///android_asset/apachecommons .html");
+            webView.loadUrl("file:///android_asset/apachecommons.html");
             AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
             builder.setTitle("Licencia")
                     .setView(web)

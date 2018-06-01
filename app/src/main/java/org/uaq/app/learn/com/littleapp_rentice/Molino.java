@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -21,6 +23,8 @@ public class Molino extends AppCompatActivity {
     private ImageView molino;
     private TextView textlvl;
     private MediaRecorder mRecorder = null;
+    private ProgressBar progressBar;
+    private ImageView fin;
     private RotateAnimation anFast,anMidFast,anMid,anMidLow,anLow,anIni;
     boolean flag;
     int waittoupdate = 1000;
@@ -28,28 +32,32 @@ public class Molino extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molino);
+        progressBar = findViewById(R.id.progressBar);
+        fin = findViewById(R.id.smileFinnish);
+        progressBar.setMax(32767);
+
+        final Animation b = AnimationUtils.loadAnimation(Molino.this,R.anim.s_ganim);
         anIni = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
         anIni.setRepeatCount(Animation.INFINITE);
-        anIni.setDuration(1500);
+        anIni.setDuration(800);
         anIni.setInterpolator(new LinearInterpolator());
         anFast = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        anFast.setDuration(500);
+        anFast.setDuration(400);
         anFast.setRepeatCount(Animation.INFINITE);
         anFast.setInterpolator(new LinearInterpolator());
 
         anMid = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        anMid.setDuration(800);
+        anMid.setDuration(700);
         anMid.setRepeatCount(Animation.INFINITE);
         anMid.setInterpolator(new LinearInterpolator());
 
 
         anLow = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-        anLow.setDuration(1100);
+        anLow.setDuration(900);
         anLow.setRepeatCount(Animation.INFINITE);
         anLow.setInterpolator(new LinearInterpolator());
         molino = findViewById(R.id.imageView4);
         molino.startAnimation(anIni);
-        textlvl = findViewById(R.id.textView7);
 
         flag = true;
         final Handler handler = new Handler(){
@@ -145,10 +153,10 @@ public class Molino extends AppCompatActivity {
                         }
                     }
                 });
-                textlvl.setText(""+val);
+                Log.d("LOG",""+val);
+                progressBar.setProgress(val.intValue());
             }
         };
-
         try {
             start();
         }catch (Exception e){
