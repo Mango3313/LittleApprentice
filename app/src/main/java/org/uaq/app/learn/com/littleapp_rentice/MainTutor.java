@@ -24,6 +24,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +38,28 @@ public class MainTutor extends AppCompatActivity
 
     private FragmentManager fragmentManager;
     private RecyclerView.LayoutManager layoutManager;
+    private FirebaseAuth mAuth;
+    private TextView nombre,add;
+    private String user,addres;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        user = currentUser.getDisplayName();
+        addres = currentUser.getEmail();
+        nombre.setText(user);
+        add.setText(addres);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
+
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_main_tutor);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,8 +80,12 @@ public class MainTutor extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hv = navigationView.getHeaderView(0);
+        nombre = hv.findViewById(R.id.usrName);
+        add = hv.findViewById(R.id.usrAdd);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -148,7 +173,7 @@ public class MainTutor extends AppCompatActivity
         } else if (id == R.id.nav_info) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
             builder.setTitle("Información")
-                    .setMessage("Versión: 0.5.1 BETA \nAutores: Aplicaciones de bajo presupuesto")
+                    .setMessage("Versión: 0.6.1 BETA \nAutores: Aplicaciones de bajo presupuesto")
                     .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

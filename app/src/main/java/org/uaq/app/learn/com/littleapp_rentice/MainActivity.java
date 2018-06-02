@@ -21,8 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Little App-rentice");
+        Fragment fragmentLog = new fragment_login();
+        final FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.logcontainer,fragmentLog,"login");
+        transaction.commit();
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-
         if(permissionCheck != PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.RECORD_AUDIO)){
                 Toast.makeText(this,"Permisos especificos",Toast.LENGTH_SHORT).show();
@@ -30,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},REQUEST_AUDIO);
             }
         }
-        Fragment fragmentLog = new fragment_login();
-        final FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.logcontainer,fragmentLog,"login");
-        transaction.commit();
-
 
         //fm.
     }
