@@ -139,6 +139,5 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:text="@string/btn_aceptar" />
 
-
         </LinearLayout>
     </ScrollView>
