@@ -32,6 +32,8 @@ public class juegosactivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(startRehil);
                 break;
             case R.id.btnSpeak:
+                Intent startSpeak = new Intent(juegosactivity.this,Speak.class);
+                startActivity(startSpeak);
                 break;
             case R.id.btnRepeat:
                 break;

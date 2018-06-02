@@ -32,7 +32,6 @@ public class MainTutor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager fragmentManager;
-    private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +40,6 @@ public class MainTutor extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         setContentView(R.layout.activity_main_tutor);
 
-        recyclerView = findViewById(R.id.recyclerCards);
-        ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
-        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
-        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
-        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
-        listaActividades.add(new Actividad("Escuchar palabras","Jorge Fuentes",1,4));
-
-        ActividadAdapter adapter = new ActividadAdapter(listaActividades);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
