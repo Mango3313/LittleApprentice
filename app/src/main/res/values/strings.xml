@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Little App-rentice</string>
     <string name="login_separator">Iniciar sesión</string>
-    <string name="campo_usuario_lgin">Usuario</string>
+    <string name="campo_usuario_lgin">Correo</string>
     <string name="campo_usuario_lgin_hint">Ejemplo: Juan Perez</string>
     <string name="campo_pass_lgin">Contraseña</string>
     <string name="campo_pass_lgin_hint">Ejemplo: 123456</string>
