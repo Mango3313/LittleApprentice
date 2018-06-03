@@ -14,12 +14,17 @@
             android:title="Juegos" />
     </group>
 
-    <item android:title="Contacto">
+    <item android:title="Configuración">
         <menu>
             <item
                 android:id="@+id/nav_comentarios"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Comentarios" />
+            <item android:id="@+id/nav_logout"
+                android:title="Cerrar sesión"
+                android:icon="@drawable/outline_exit_to_app_24">
+
+            </item>
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/round_info_24"

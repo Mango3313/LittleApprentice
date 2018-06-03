@@ -65,7 +65,7 @@ public class fragment_login extends Fragment {
                     //new LoginTask(getContext()).execute();
                     String usuario = editUsuario.getText().toString();
                     String contraseña = editContraseña.getText().toString();
-                    if(usuario!=null && contraseña!=null){
+                    if(!usuario.isEmpty() && !contraseña.isEmpty()){
                     mAuth.signInWithEmailAndPassword(usuario,contraseña).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

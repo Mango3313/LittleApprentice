@@ -29,13 +29,4 @@
         android:paddingBottom="32dp"
         android:paddingTop="8dp"/>
 
-    <Button
-        android:id="@+id/btnRepeat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/listen"
-        android:background="?android:attr/selectableItemBackground"
-        android:text="Escucha las palabras"
-        android:paddingBottom="32dp"
-        android:paddingTop="8dp"/>
 </LinearLayout>

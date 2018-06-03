@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:layout_margin="8dp"
     tools:context=".Speak">
 
     <TextView
@@ -14,11 +15,32 @@
         android:layout_height="wrap_content"
         android:text="Es momento de escucharte" />
 
-    <Button
-        android:id="@+id/button5"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/btnPlay"
+            android:layout_width="100dp"
+            android:layout_height="75dp"
+            app:srcCompat="@drawable/play_sound"
+            />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/showTime"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="14pt"
+        android:textColor="#000"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="00:00" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,31 +49,55 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnPrev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableTop="@drawable/baseline_navigate_before_24"
+            android:text="Anterior" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imgDraw"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                app:srcCompat="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            app:srcCompat="@mipmap/ic_launcher" />
+            <TextView
+                android:id="@+id/imgDesc"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/imgDraw"
+                android:layout_margin="2dp"
+                android:textColor="#000"
+                android:textSize="11dp"
+                android:gravity="center"
+                android:text="TextView" />
+
+        </RelativeLayout>
+
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:background="?android:attr/selectableItemBackground"
+            android:drawableTop="@drawable/baseline_navigate_next_24"
+            android:text="Siguiente" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView4"
+    <Button
+        android:id="@+id/textResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:text=""
+        android:layout_marginTop="8dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:drawableTop="@mipmap/speak"/>
+
 </LinearLayout>

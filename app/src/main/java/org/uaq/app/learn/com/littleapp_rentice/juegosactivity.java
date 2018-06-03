@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class juegosactivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button mol,speak,repeat;
+    private Button mol,speak;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +19,6 @@ public class juegosactivity extends AppCompatActivity implements View.OnClickLis
         mol.setOnClickListener(this);
         speak = findViewById(R.id.btnSpeak);
         speak.setOnClickListener(this);
-        repeat = findViewById(R.id.btnRepeat);
-        repeat.setOnClickListener(this);
 
     }
 
@@ -34,8 +32,6 @@ public class juegosactivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btnSpeak:
                 Intent startSpeak = new Intent(juegosactivity.this,Speak.class);
                 startActivity(startSpeak);
-                break;
-            case R.id.btnRepeat:
                 break;
         }
     }

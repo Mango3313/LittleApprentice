@@ -93,7 +93,7 @@ public class MainTutor extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
         }
     }
 
@@ -162,14 +162,17 @@ public class MainTutor extends AppCompatActivity
             startActivity(gameIntent);
         } else if (id == R.id.nav_perfil) {
         } else if (id == R.id.nav_comentarios) {
-            try{
+            try {
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "gta321.jaff@gmail.com", null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Comentarios sobre la app");
                 startActivity(Intent.createChooser(emailIntent, null));
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
+        }else if(id == R.id.nav_logout){
+            mAuth.signOut();
+            finish();
         } else if (id == R.id.nav_info) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
             builder.setTitle("Información")
