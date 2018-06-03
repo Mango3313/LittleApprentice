@@ -60,6 +60,7 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.button3){
+            btnReg.setEnabled(false);
             if(isOnNetwork()){
                 String nom,apell,corr,cont,rcont;
                 nom = edNom.getText().toString().trim();
@@ -80,6 +81,7 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                         mAuth.createUserWithEmailAndPassword(corr,cont).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
                             @Override public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    btnReg.setEnabled(false);
                                     FirebaseUser user = mAuth.getCurrentUser();
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(edNom.getText().toString().trim()+" "+edApell.getText().toString().trim()).build();
@@ -87,6 +89,7 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                                     mAuth.signOut();
                                     getFragmentManager().popBackStack();
                                 } else {
+                                    btnReg.setEnabled(false);
                                     FirebaseAuthException e =(FirebaseAuthException) task.getException();
                                     Toast.makeText(getContext(), "Authentication failed:"+e.getMessage(),
                                             Toast.LENGTH_SHORT).show();
@@ -95,11 +98,13 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                         });
                     }else{
                         Toast.makeText(getContext(),"Las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
+                        btnReg.setEnabled(false);
                     }
                 }
 
             }else{
                 Snackbar.make(getView(),"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
+                btnReg.setEnabled(false);
             }
         }
     }

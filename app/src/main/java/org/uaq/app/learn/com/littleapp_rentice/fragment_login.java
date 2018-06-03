@@ -52,6 +52,7 @@ public class fragment_login extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.button){
+            btnLogIn.setEnabled(false);
             if(isOnNetwork()){
                 //new LoginTask(getContext()).execute();
                 String usuario = editUsuario.getText().toString();
@@ -66,12 +67,14 @@ public class fragment_login extends Fragment implements View.OnClickListener{
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
+                                btnLogIn.setEnabled(true);
                                 progressDialog.dismiss();
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Intent intent = new Intent(getActivity(),MainTutor.class);
                                 startActivity(intent);
                                 //updateUI(user);
                             } else {
+                                btnLogIn.setEnabled(true);
                                 progressDialog.dismiss();
                                 // If sign in fails, display a message to the user.
                                 //Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -83,9 +86,11 @@ public class fragment_login extends Fragment implements View.OnClickListener{
                     });
                 }else{
                     Toast.makeText(getContext(),"Por favor llene los campos",Toast.LENGTH_SHORT).show();
+                    btnLogIn.setEnabled(true);
                 }
             }else{
                 Snackbar.make(getView(),"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
+                btnLogIn.setEnabled(true);
             }
         }
     }
