@@ -176,7 +176,7 @@ public class MainTutor extends AppCompatActivity
         } else if (id == R.id.nav_info) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainTutor.this);
             builder.setTitle("Información")
-                    .setMessage("Versión: 0.6.1 BETA \nAutores: Aplicaciones de bajo presupuesto")
+                    .setMessage("Versión: 0.8.1 BETA \nAutores: Aplicaciones de bajo presupuesto")
                     .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
