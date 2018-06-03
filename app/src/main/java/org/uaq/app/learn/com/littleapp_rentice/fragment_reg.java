@@ -85,6 +85,7 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                                             .setDisplayName(edNom.getText().toString().trim()+" "+edApell.getText().toString().trim()).build();
                                     user.updateProfile(profileUpdates);
                                     mAuth.signOut();
+                                    getFragmentManager().popBackStack();
                                 } else {
                                     FirebaseAuthException e =(FirebaseAuthException) task.getException();
                                     Toast.makeText(getContext(), "Authentication failed:"+e.getMessage(),
