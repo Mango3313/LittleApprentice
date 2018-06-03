@@ -1,5 +1,7 @@
 package org.uaq.app.learn.com.littleapp_rentice;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -29,7 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Properties;
 
-public class fragment_login extends Fragment {
+public class fragment_login extends Fragment implements View.OnClickListener{
     private TextView regClic;
     private Button btnLogIn;
     private TextInputEditText editUsuario, editContraseña;
@@ -47,6 +49,47 @@ public class fragment_login extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.button){
+            if(isOnNetwork()){
+                //new LoginTask(getContext()).execute();
+                String usuario = editUsuario.getText().toString();
+                String contraseña = editContraseña.getText().toString();
+                if(!usuario.isEmpty() && !contraseña.isEmpty()){
+                    final ProgressDialog progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setTitle("Espera....");
+                    progressDialog.setMessage("Validando usuario");
+                    progressDialog.show();
+                    mAuth.signInWithEmailAndPassword(usuario,contraseña).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                progressDialog.dismiss();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Intent intent = new Intent(getActivity(),MainTutor.class);
+                                startActivity(intent);
+                                //updateUI(user);
+                            } else {
+                                progressDialog.dismiss();
+                                // If sign in fails, display a message to the user.
+                                //Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(getContext(), "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                //updateUI(null);
+                            }
+                        }
+                    });
+                }else{
+                    Toast.makeText(getContext(),"Por favor llene los campos",Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Snackbar.make(getView(),"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,40 +101,7 @@ public class fragment_login extends Fragment {
         btnLogIn = (Button) root.findViewById(R.id.button);
         editContraseña = root.findViewById(R.id.editText2);
         editUsuario = root.findViewById(R.id.editText);
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isOnNetwork()){
-                    //new LoginTask(getContext()).execute();
-                    String usuario = editUsuario.getText().toString();
-                    String contraseña = editContraseña.getText().toString();
-                    if(!usuario.isEmpty() && !contraseña.isEmpty()){
-                    mAuth.signInWithEmailAndPassword(usuario,contraseña).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent = new Intent(getActivity(),MainTutor.class);
-                                startActivity(intent);
-                                //updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                //Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                //updateUI(null);
-                            }
-                        }
-                    });
-                    }else{
-                        Toast.makeText(getContext(),"Por favor llene los campos",Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Snackbar.make(root,"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
-                }
-            }
-        });
+        btnLogIn.setOnClickListener(this);
         regClic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
