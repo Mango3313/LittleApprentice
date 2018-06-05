@@ -38,6 +38,10 @@ public class fragment_login extends Fragment implements View.OnClickListener{
     private Context context;
     private Properties props;
     private FirebaseAuth mAuth;
+    public static final String TAG_DATA = "nom";
+    public static final int FRAGMENT_CODE = 1;
+    public static final String TAG_FRAGMENT = "login";
+    private String nombre;
     @Override
     public void onAttach(Context context) {
         context = context;
@@ -70,8 +74,13 @@ public class fragment_login extends Fragment implements View.OnClickListener{
                                 btnLogIn.setEnabled(true);
                                 progressDialog.dismiss();
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent = new Intent(getActivity(),MainTutor.class);
-                                startActivity(intent);
+                                if(user.isEmailVerified()){
+                                    Intent intent = new Intent(getActivity(),MainTutor.class);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(getContext(),"Debes verificar tu email",Toast.LENGTH_SHORT).show();
+                                    mAuth.signOut();
+                                }
                                 //updateUI(user);
                             } else {
                                 btnLogIn.setEnabled(true);
@@ -92,6 +101,14 @@ public class fragment_login extends Fragment implements View.OnClickListener{
                 Snackbar.make(getView(),"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
                 btnLogIn.setEnabled(true);
             }
+        }else if(view.getId() == R.id.textView5){
+            Fragment frag = new fragment_reg();
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction transaction1 = fm.beginTransaction();
+            transaction1.setCustomAnimations(R.animator.transaction_start_in,R.animator.transaction_start_out,R.animator.transaction_return_in,R.animator.transaction_return_out);
+            transaction1.replace(R.id.logcontainer,frag);
+            transaction1.addToBackStack(TAG_FRAGMENT);
+            transaction1.commit();
         }
     }
 
@@ -107,21 +124,20 @@ public class fragment_login extends Fragment implements View.OnClickListener{
         editContraseña = root.findViewById(R.id.editText2);
         editUsuario = root.findViewById(R.id.editText);
         btnLogIn.setOnClickListener(this);
-        regClic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment frag = new fragment_reg();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction1 = fm.beginTransaction();
-                transaction1.setCustomAnimations(R.animator.transaction_start_in,R.animator.transaction_start_out,R.animator.transaction_return_in,R.animator.transaction_return_out);
-                transaction1.addToBackStack("login");
-                transaction1.replace(R.id.logcontainer,frag,"reg");
-                transaction1.commit();
-
-            }
-        });
+        regClic.setOnClickListener(this);
         return root;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK){
+            if(requestCode == FRAGMENT_CODE){
+                nombre = data.getStringExtra(TAG_DATA);
+            }
+        }
+    }
+
     public boolean isOnNetwork(){
         boolean status = false;
         try{

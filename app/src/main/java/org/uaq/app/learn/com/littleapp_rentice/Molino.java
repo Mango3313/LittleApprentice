@@ -25,6 +25,7 @@ public class Molino extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_molino);
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(32767);

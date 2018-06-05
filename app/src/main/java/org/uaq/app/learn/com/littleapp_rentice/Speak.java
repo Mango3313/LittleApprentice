@@ -12,6 +12,8 @@ import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,6 +44,7 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speak);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         res = new ArrayList<>();
         imageView = findViewById(R.id.imgDraw);
         textView = findViewById(R.id.imgDesc);
@@ -84,7 +87,8 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onResults(Bundle bundle) {
-                Toast.makeText(getApplicationContext(),"DONE",Toast.LENGTH_SHORT).show();
+                LayoutInflater inflater = getLayoutInflater();
+                View toV = inflater.inflate(R.layout.toast_great,null);
                 String str = new String();
                 Log.d(TAG, "onResults " + bundle);
                 ArrayList data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -94,7 +98,12 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
                     str += data.get(i);
                 }
                 if( data.get(0).equals(execises[currentIndex].getText())){
-                    Toast.makeText(getApplicationContext(),"CORRECTO",Toast.LENGTH_SHORT).show();
+
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM,0,0);
+                    toast.setDuration(Toast.LENGTH_SHORT);
+                    toast.setView(toV);
+                    toast.show();
                 }
             }
 

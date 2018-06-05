@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,10 +24,18 @@
         <activity
             android:name=".MainTutor"
             android:label="@string/title_activity_main_tutor"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".juegosactivity" />
-        <activity android:name=".Molino" />
-        <activity android:name=".Speak"></activity>
+        <activity
+            android:name=".juegosactivity"
+            android:parentActivityName=".MainTutor" />
+        <activity
+            android:name=".Molino"
+            android:parentActivityName=".juegosactivity" />
+        <activity
+            android:name=".Speak"
+            android:parentActivityName=".juegosactivity" />
+        <activity android:name=".Words"></activity>
     </application>
 
 </manifest>

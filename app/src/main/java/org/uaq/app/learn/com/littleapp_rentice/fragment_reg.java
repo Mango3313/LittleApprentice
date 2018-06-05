@@ -1,6 +1,8 @@
 package org.uaq.app.learn.com.littleapp_rentice;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,10 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,15 +27,47 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class fragment_reg extends Fragment implements View.OnClickListener{
+
+public class fragment_reg extends Fragment implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener{
     private Button btnReg;
     private FirebaseAuth mAuth;
     private TextInputEditText edNom,edApell,edCorr,edContr,edRContr;
     private RadioGroup se;
+    private GoogleApiClient googleClient;
+    private DatabaseReference reference;
+    public static final String TAG_DATA = "nom";
+    private boolean registry = false;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        reference = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+    }
+    public void writeSexo(String UID,String sexo){
+        User user = new User(UID,sexo);
+        reference.child("datos_usr").child(UID).setValue(user).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Log.d("BD","Success");
+                }else{
+                    Log.d("BD","Error"+task.getException());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     @Override
@@ -45,7 +79,6 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.lay_regs,container,false);
-        mAuth = FirebaseAuth.getInstance();
         btnReg = root.findViewById(R.id.button3);
         edNom = root.findViewById(R.id.editNombre);
         edApell = root.findViewById(R.id.editApellido);
@@ -56,11 +89,9 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
         btnReg.setOnClickListener(this);
         return root;
     }
-
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.button3){
-            btnReg.setEnabled(false);
             if(isOnNetwork()){
                 String nom,apell,corr,cont,rcont;
                 nom = edNom.getText().toString().trim();
@@ -72,24 +103,44 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                 if(nom.isEmpty() || apell.isEmpty() || corr.isEmpty() || cont.isEmpty() || rcont.isEmpty()){
                     Toast.makeText(getContext(),"Varios campos estan vacios",Toast.LENGTH_SHORT).show();
                 }else{
+                    btnReg.setEnabled(false);
                     final ProgressDialog progressDialog = new ProgressDialog(getContext());
                     progressDialog.setTitle("Espera....");
-                    progressDialog.setMessage("Validando usuario");
+                    progressDialog.setMessage("Registrando usuario");
                     progressDialog.show();
                     if(cont.equals(rcont)){
                         progressDialog.dismiss();
                         mAuth.createUserWithEmailAndPassword(corr,cont).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
                             @Override public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    btnReg.setEnabled(false);
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(edNom.getText().toString().trim()+" "+edApell.getText().toString().trim()).build();
-                                    user.updateProfile(profileUpdates);
-                                    mAuth.signOut();
-                                    getFragmentManager().popBackStack();
+                                    final FirebaseUser user = mAuth.getCurrentUser();
+                                    user.sendEmailVerification()
+                                            .addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(getContext(),"Email the verificacion " +
+                                                                "enviado a "+user.getEmail(),Toast.LENGTH_SHORT).show();
+                                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                              .setDisplayName(edNom.getText().toString().trim()+" "+edApell.getText().toString().trim()).build();
+                                                        user.updateProfile(profileUpdates);
+                                                        String sexo = "";
+                                                        if(se.getCheckedRadioButtonId() == R.id.radioHo){
+                                                            sexo = "Hombre";
+                                                        }else{
+                                                            sexo = "Mujer";
+                                                        }
+                                                        writeSexo(user.getUid(),sexo);
+                                                        getFragmentManager().popBackStack();
+                                                    }else{
+                                                        FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                                                        Toast.makeText(getContext(),"Error:  " +
+                                                                e.getMessage(),Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                 } else {
-                                    btnReg.setEnabled(false);
+                                    btnReg.setEnabled(true);
                                     FirebaseAuthException e =(FirebaseAuthException) task.getException();
                                     Toast.makeText(getContext(), "Authentication failed:"+e.getMessage(),
                                             Toast.LENGTH_SHORT).show();
@@ -98,16 +149,17 @@ public class fragment_reg extends Fragment implements View.OnClickListener{
                         });
                     }else{
                         Toast.makeText(getContext(),"Las contraseñas no coinciden",Toast.LENGTH_SHORT).show();
-                        btnReg.setEnabled(false);
+                        btnReg.setEnabled(true);
                     }
                 }
 
             }else{
                 Snackbar.make(getView(),"No tienes conexion a internet",Snackbar.LENGTH_LONG).show();
-                btnReg.setEnabled(false);
+                btnReg.setEnabled(true);
             }
         }
     }
+
 
     public boolean isOnNetwork(){
         boolean status = false;
