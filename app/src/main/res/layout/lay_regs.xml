@@ -101,29 +101,6 @@
                     android:hint="@string/campo_rep_contrasenia"
                     android:inputType="textPassword" />
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <RadioButton
-                        android:id="@+id/radioHo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="Hombre" />
-
-                    <RadioButton
-                        android:id="@+id/radioMu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Mujer" />
-                </RadioGroup>
             </android.support.design.widget.TextInputLayout>
 
             <Button
@@ -138,11 +115,5 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:text="@string/btn_aceptar" />
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?android:listSeparatorTextViewStyle"
-                android:text="Otras opciones" />
         </LinearLayout>
     </ScrollView>

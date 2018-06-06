@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +22,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class Speak extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,58 +45,87 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
     private TextView textView;
     private Button sigui,prev,speak;
     private ImageView play;
+    private int aciertos=0,errores=0;
+    private int tiempo;
     private RepeatImage execises[];
-    private Timer timer;
     private ArrayList res;
     private String TAG = "LISTEN_RESULTS";
     private SpeechRecognizer sr;
     public int seconds = 00;
-    public int minutes = 00;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private DatabaseReference ref;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference();
+    }
+    public void writeData(String UUID,String aciertos,String errores,String tiempo,String fecha){
+        User user = new User(UUID,aciertos,errores,tiempo,fecha);
+        ref.child("datos_users")
+                .child(currentUser.getUid()).child("posts").child(UUID).setValue(user)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"La aplicacion se ha registrado con exito",Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Intentalo de nuevo",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speak);
-
+        final Handler handler = new Handler();
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                seconds+=1;
+                Log.d("SCE",""+seconds);
+            }
+        }, 0, 1000);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         res = new ArrayList<>();
         imageView = findViewById(R.id.imgDraw);
         textView = findViewById(R.id.imgDesc);
         sigui = findViewById(R.id.btnNext);
-        prev = findViewById(R.id.btnPrev);
-        play = findViewById(R.id.btnPlay);
         speak = findViewById(R.id.textResult);
+        play = findViewById(R.id.btnPlay);
 
         sr = SpeechRecognizer.createSpeechRecognizer(Speak.this);
         sr.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle bundle) {
-
             }
 
             @Override
             public void onBeginningOfSpeech() {
-
             }
 
             @Override
             public void onRmsChanged(float v) {
-
             }
 
             @Override
             public void onBufferReceived(byte[] bytes) {
-
             }
 
             @Override
             public void onEndOfSpeech() {
-
             }
 
             @Override
             public void onError(int i) {
-
             }
 
             @Override
@@ -98,13 +141,53 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
                     str += data.get(i);
                 }
                 if( data.get(0).equals(execises[currentIndex].getText())){
-
+                    aciertos++;
                     Toast toast = new Toast(getApplicationContext());
                     toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM,0,0);
                     toast.setDuration(Toast.LENGTH_SHORT);
                     toast.setView(toV);
                     toast.show();
+                }else{
+                    errores++;
                 }
+                if(currentIndex < execises.length-1){
+                    currentIndex++;
+                    setCurrentExer(execises[currentIndex]);
+                }else{
+                    try {
+                        timer.cancel();
+                        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Date today = Calendar.getInstance().getTime();
+                        String todayFor =  format.format(today);
+                        writeData(UUID.randomUUID().toString(), "" + aciertos, "" + errores, "" + seconds, todayFor);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                /**
+                if(currentIndex == execises.length-1){
+                    try {
+                        timer.cancel();
+                        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Date today = Calendar.getInstance().getTime();
+                        String todayFor =  format.format(today);
+                        writeData(UUID.randomUUID().toString(), "" + aciertos, "" + errores, "" + seconds, todayFor);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    if( data.get(0).equals(execises[currentIndex].getText())){
+                        aciertos++;
+                        Toast toast = new Toast(getApplicationContext());
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM,0,0);
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.setView(toV);
+                        toast.show();
+                    }else{
+                        errores++;
+                    }
+                }
+                 **/
             }
 
             @Override
@@ -119,10 +202,7 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
         });
 
         speak.setOnClickListener(this);
-        sigui.setOnClickListener(this);
-        prev.setOnClickListener(this);
         play.setOnClickListener(this);
-        timer = new Timer();
         Resources res = getResources();
         try {
             execises = new RepeatImage[]{
@@ -141,7 +221,7 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.btnNext){
+        /**if(view.getId() == R.id.btnNext){
             if(currentIndex < execises.length-1){
                 currentIndex++;
                 setCurrentExer(execises[currentIndex]);
@@ -151,37 +231,12 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
                 currentIndex--;
                 setCurrentExer(execises[currentIndex]);
             }
-        }else if(view.getId() == R.id.btnPlay){
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            TextView tx = findViewById(R.id.showTime);
-                            tx.setText(String.valueOf(minutes)+":"+String.valueOf(seconds));
-                            seconds += 1;
+        }else **/
+        if(view.getId() == R.id.btnPlay){
 
-                            if(seconds == 60)
-                            {
-                                tx.setText(String.valueOf(minutes)+":"+String.valueOf(seconds));
-
-                                seconds=0;
-                                minutes=minutes+1;
-
-                            }
-                        }
-                    });
-                }
-            }, 0, 1000);
         }else if(view.getId() == R.id.textResult){
-            timer.cancel();
-            timer = new Timer();
-            TextView tx = findViewById(R.id.showTime);
-            tx.setText("0:0");
-            seconds = 0;
-            minutes = 0;
-
+            //TextView tx = findViewById(R.id.showTime);
+            //tx.setText("0:0");
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,"voice.recognition.test");
@@ -190,6 +245,13 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
             sr.startListening(intent);
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sr.stopListening();
+        sr.destroy();
     }
 
     public void setCurrentExer(RepeatImage repeatImage){

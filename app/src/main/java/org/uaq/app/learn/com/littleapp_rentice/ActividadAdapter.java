@@ -9,21 +9,23 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.ActividadViewHolder> {
-    private List<Actividad> items;
-    public static class ActividadViewHolder extends RecyclerView.ViewHolder{
-        public TextView actividad;
-        public TextView nombre;
-        public RatingBar calif;
+public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.PostsHolder> {
+    private List<Posts> items;
+    public static class PostsHolder extends RecyclerView.ViewHolder{
+        public TextView fecha;
+        public TextView tiempo;
+        public RatingBar aciertos;
+        public RatingBar errores;
 
-        public ActividadViewHolder(View view){
+        public PostsHolder(View view){
             super(view);
-            actividad = view.findViewById(R.id.card_act_name);
-            nombre = view.findViewById(R.id.card_r_name);
-            calif = view.findViewById(R.id.card_rating);
+            fecha = view.findViewById(R.id.card_date);
+            tiempo = view.findViewById(R.id.card_tiempo);
+            aciertos = view.findViewById(R.id.card_aciertos);
+            errores = view.findViewById(R.id.card_errores);
         }
     }
-    public ActividadAdapter(List<Actividad> actividadList){
+    public ActividadAdapter(List<Posts> actividadList){
         this.items = actividadList;
     }
 
@@ -33,19 +35,17 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.Acti
     }
 
     @Override
-    public ActividadViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PostsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.noticias_cardview,parent,
                 false);
-        return new ActividadViewHolder(v);
+        return new PostsHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ActividadViewHolder holder, int position) {
-        holder.nombre.setText(items.get(position).getActividad());
-        holder.actividad.setText(items.get(position).getRealizador());
-        //holder.actividad.setCompoundDrawables(DrR.mipmap.ic_launcher,null,null,null);
-        holder.calif.setRating(items.get(position).getRateActividad());
-
-
+    public void onBindViewHolder(PostsHolder holder, int position) {
+        holder.tiempo.setText(items.get(position).getTiempo());
+        holder.fecha.setText(items.get(position).getFecha());
+        holder.aciertos.setRating(Float.parseFloat(items.get(position).getAciertos()));
+        holder.aciertos.setRating(Float.parseFloat(items.get(position).getErrores()));
     }
 }

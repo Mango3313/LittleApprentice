@@ -13,27 +13,47 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Actividad:" />
+            android:text="Fecha" />
 
         <TextView
-            android:id="@+id/card_act_name"
+            android:id="@+id/card_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/card_r_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:drawablePadding="8dp"
-            android:text="Nombre del participante" />
+            android:text="Tiempo:" />
+
+        <TextView
+            android:id="@+id/card_tiempo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aciertos:" />
 
         <RatingBar
-            android:id="@+id/card_rating"
+            android:id="@+id/card_aciertos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
+            android:numStars="6"
+            android:isIndicator="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Errores:" />
+
+        <RatingBar
+            android:id="@+id/card_errores"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="6"
             android:isIndicator="true"/>
     </LinearLayout>
 

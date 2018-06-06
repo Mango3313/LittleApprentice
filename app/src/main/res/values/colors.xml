@@ -3,4 +3,10 @@
     <color name="colorPrimary">#2196f3</color>
     <color name="colorPrimaryDark">#0069c0</color>
     <color name="colorAccent">#ffc107</color>
+    <color name="bright_sun">#fcfcb7</color>
+    <color name="bright_sun_ref">#88fcfcb7</color>
+    <color name="blue_sky">#1103A9F4</color>
+    <color name="sunset_sky">#88ec8100</color>
+    <color name="night_sky">#FF05192e</color>
+    <color name="sea">#DD224869</color>
 </resources>

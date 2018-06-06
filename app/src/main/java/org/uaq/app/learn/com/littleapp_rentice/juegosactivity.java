@@ -23,8 +23,8 @@ public class juegosactivity extends AppCompatActivity implements View.OnClickLis
         mol.setOnClickListener(this);
         speak = findViewById(R.id.btnSpeak);
         speak.setOnClickListener(this);
-        words = findViewById(R.id.btnWords);
-        words.setOnClickListener(this);
+        //words = findViewById(R.id.btnWords);
+        //words.setOnClickListener(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -51,10 +51,10 @@ public class juegosactivity extends AppCompatActivity implements View.OnClickLis
                 Intent startSpeak = new Intent(juegosactivity.this,Speak.class);
                 startActivity(startSpeak);
                 break;
-            case R.id.btnWords:
-                Intent startWords = new Intent(juegosactivity.this,Words.class);
-                startActivity(startWords);
-                break;
+            //case R.id.btnWords:
+              //  Intent startWords = new Intent(juegosactivity.this,Words.class);
+                //startActivity(startWords);
+                //break;
         }
     }
 }

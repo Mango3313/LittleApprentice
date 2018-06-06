@@ -1,8 +1,6 @@
 package org.uaq.app.learn.com.littleapp_rentice;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -35,7 +33,6 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
     private Button btnReg;
     private FirebaseAuth mAuth;
     private TextInputEditText edNom,edApell,edCorr,edContr,edRContr;
-    private RadioGroup se;
     private GoogleApiClient googleClient;
     private DatabaseReference reference;
     public static final String TAG_DATA = "nom";
@@ -52,8 +49,8 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
         mAuth = FirebaseAuth.getInstance();
     }
     public void writeSexo(String UID,String sexo){
-        User user = new User(UID,sexo);
-        reference.child("datos_usr").child(UID).setValue(user).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
+        /**User user = new User(UID,sexo);
+        /reference.child("datos_usr").child(UID).setValue(user).addOnCompleteListener(getActivity(), new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
@@ -63,6 +60,7 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
                 }
             }
         });
+         **/
     }
 
     @Override
@@ -85,7 +83,6 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
         edCorr = root.findViewById(R.id.editCorreo);
         edContr = root.findViewById(R.id.editContra);
         edRContr = root.findViewById(R.id.editRContra);
-        se = root.findViewById(R.id.radioGroup);
         btnReg.setOnClickListener(this);
         return root;
     }
@@ -124,13 +121,6 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
                                                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                                               .setDisplayName(edNom.getText().toString().trim()+" "+edApell.getText().toString().trim()).build();
                                                         user.updateProfile(profileUpdates);
-                                                        String sexo = "";
-                                                        if(se.getCheckedRadioButtonId() == R.id.radioHo){
-                                                            sexo = "Hombre";
-                                                        }else{
-                                                            sexo = "Mujer";
-                                                        }
-                                                        writeSexo(user.getUid(),sexo);
                                                         getFragmentManager().popBackStack();
                                                     }else{
                                                         FirebaseAuthException e = (FirebaseAuthException) task.getException();
