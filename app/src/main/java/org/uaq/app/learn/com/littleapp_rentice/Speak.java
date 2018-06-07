@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -19,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,9 +47,9 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
     private ImageView imageView;
     private TextView textView;
     private Button sigui,prev,speak;
-    private ImageView play;
+    private RelativeLayout play;
     private int aciertos=0,errores=0;
-    private int tiempo;
+    private Timer timer;
     private RepeatImage execises[];
     private ArrayList res;
     private String TAG = "LISTEN_RESULTS";
@@ -55,6 +58,13 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference ref;
+    private MediaPlayer player;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
+    }
 
     @Override
     protected void onStart() {
@@ -86,12 +96,11 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speak);
         final Handler handler = new Handler();
-        final Timer timer = new Timer();
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 seconds+=1;
-                Log.d("SCE",""+seconds);
             }
         }, 0, 1000);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -133,11 +142,9 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
                 LayoutInflater inflater = getLayoutInflater();
                 View toV = inflater.inflate(R.layout.toast_great,null);
                 String str = new String();
-                Log.d(TAG, "onResults " + bundle);
                 ArrayList data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 for (int i = 0; i < data.size(); i++)
                 {
-                    Log.d(TAG, "result " + data.get(i));
                     str += data.get(i);
                 }
                 if( data.get(0).equals(execises[currentIndex].getText())){
@@ -206,17 +213,18 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
         Resources res = getResources();
         try {
             execises = new RepeatImage[]{
-                    new RepeatImage(res.getDrawable(R.drawable.aligator), "cocodrilo",0,0),
-                    new RepeatImage(res.getDrawable(R.drawable.dragon),"dragón",0,0),
-                    new RepeatImage(res.getDrawable(R.drawable.paint),"cuadro",0,0),
-                    new RepeatImage(res.getDrawable(R.drawable.blocks),"bloques",1,0),
-                    new RepeatImage(res.getDrawable(R.drawable.cloudy),"nublado",1,0),
-                    new RepeatImage(res.getDrawable(R.drawable.town),"pueblo",1,0)
+                    new RepeatImage(res.getDrawable(R.drawable.aligator), "cocodrilo",R.raw.cocodrilo),
+                    new RepeatImage(res.getDrawable(R.drawable.dragon),"dragón",R.raw.dragon),
+                    new RepeatImage(res.getDrawable(R.drawable.paint),"cuadro",R.raw.cuadro),
+                    new RepeatImage(res.getDrawable(R.drawable.blocks),"bloques",R.raw.bloques),
+                    new RepeatImage(res.getDrawable(R.drawable.cloudy),"nublado",R.raw.nublado),
+                    new RepeatImage(res.getDrawable(R.drawable.town),"pueblo",R.raw.pueblo)
             };
             setCurrentExer(execises[currentIndex]);
         }catch (Exception e){
 
         }
+        player = MediaPlayer.create(getApplicationContext(),execises[currentIndex].getRaw());
     }
 
     @Override
@@ -233,7 +241,32 @@ public class Speak extends AppCompatActivity implements View.OnClickListener {
             }
         }else **/
         if(view.getId() == R.id.btnPlay){
-
+            switch (execises[currentIndex].getRaw()){
+                case R.raw.cocodrilo:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.cocodrilo);
+                    player.start();
+                    break;
+                case R.raw.cuadro:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.cuadro);
+                    player.start();
+                    break;
+                case R.raw.bloques:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.bloques);
+                    player.start();
+                    break;
+                case R.raw.dragon:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.dragon);
+                    player.start();
+                    break;
+                case R.raw.nublado:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.nublado);
+                    player.start();
+                    break;
+                case R.raw.pueblo:
+                    player = MediaPlayer.create(getApplicationContext(),R.raw.pueblo);
+                    player.start();
+                    break;
+            }
         }else if(view.getId() == R.id.textResult){
             //TextView tx = findViewById(R.id.showTime);
             //tx.setText("0:0");

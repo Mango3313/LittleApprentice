@@ -87,16 +87,20 @@ public class MainTutor extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setTitle("");
         setContentView(R.layout.activity_main_tutor);
-        recyclerView = findViewById(R.id.recyclerView);
-        fragmentManager = getSupportFragmentManager();
-        posts = new ArrayList<>();
-        posts.add(new Posts("2222","2","2","2","2"));
-        for(Posts p:posts){
-            Log.d("F",""+p.aciertos);
-        }
-        adapter1 = new ActividadAdapter(posts);
-        recyclerView.setAdapter(adapter1);
         mAuth = FirebaseAuth.getInstance();
+        //recyclerView = findViewById(R.id.recyclerView);
+        fragmentManager = getSupportFragmentManager();
+        Fragment sun = new SunsetFragment();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.sunsetcontainer,sun);
+        fragmentTransaction.commit();
+        //posts = new ArrayList<>();
+        //posts.add(new Posts("2222","2","2","2","2"));
+        //for(Posts p:posts){
+          //  Log.d("F",""+p.aciertos);
+        //}
+        /*adapter1 = new ActividadAdapter(posts);
+        recyclerView.setAdapter(adapter1);
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -127,7 +131,7 @@ public class MainTutor extends AppCompatActivity
                 Log.d("SIZE",""+posts.size());
                 adapter1 = new ActividadAdapter(posts);
                 Log.d("SIZE",""+adapter1.getItemCount());
-                recyclerView.swapAdapter(adapter1,false);
+                recyclerView.setAdapter(adapter1 );
             }
 
             @Override
@@ -136,6 +140,7 @@ public class MainTutor extends AppCompatActivity
         recyclerView.setAdapter(adapter1);
         postsRef.addListenerForSingleValueEvent(eventListener);
         Log.d("NUMS",""+posts.size());
+        */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -148,14 +153,10 @@ public class MainTutor extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hv = navigationView.getHeaderView(0);
         nombre = hv.findViewById(R.id.usrName);
+        nombre.setText(mAuth.getCurrentUser().getDisplayName());
         add = hv.findViewById(R.id.usrAdd);
+        add.setText(mAuth.getCurrentUser().getEmail());
         navigationView.setNavigationItemSelectedListener(this);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
     }
 
 

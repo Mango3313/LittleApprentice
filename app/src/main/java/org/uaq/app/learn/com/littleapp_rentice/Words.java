@@ -34,9 +34,9 @@ public class Words extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_words);
         Resources res = getResources();
         execises = new RepeatImage[]{
-                new RepeatImage(res.getDrawable(R.drawable.dragon),"dragón",0,0),
-                new RepeatImage(res.getDrawable(R.drawable.paint),"cuadro",0,0),
-                new RepeatImage(res.getDrawable(R.drawable.town),"pueblo",1,0)
+                new RepeatImage(res.getDrawable(R.drawable.dragon),"dragón",0),
+                new RepeatImage(res.getDrawable(R.drawable.paint),"cuadro",0),
+                new RepeatImage(res.getDrawable(R.drawable.town),"pueblo",1)
         };
         CharView charView[] = new CharView[9];
         anChV = new int[3];
@@ -119,8 +119,6 @@ public class Words extends AppCompatActivity implements View.OnClickListener {
             }
         }else if(id == R.id.textAn2){
             TextView one = findViewById(R.id.textAn3);
-            Log.d("CHARAT",""+tA3.getText().charAt(0));
-            Log.d("CHARAT",""+ans[0]);
             if(tA3.getText().charAt(0) == ans[3]){
                 getViewId(anChV[0],one.getText().toString());
             }
@@ -136,8 +134,6 @@ public class Words extends AppCompatActivity implements View.OnClickListener {
             }
         }else if(id == R.id.textAn4){
             TextView one = findViewById(R.id.textAn4);
-            Log.d("CHARAT",""+tA3.getText().charAt(0));
-            Log.d("CHARAT",""+ans[0]);
             if(tA4.getText().charAt(0) == ans[3]){
                 getViewId(anChV[0],one.getText().toString());
             }
@@ -152,8 +148,6 @@ public class Words extends AppCompatActivity implements View.OnClickListener {
             }
         }else if(id == R.id.textAn5){
             TextView one = findViewById(R.id.textAn5);
-            Log.d("CHARAT",""+tA3.getText().charAt(0));
-            Log.d("CHARAT",""+ans[1]);
             if(tA5.getText().charAt(0) == ans[3]){
                 getViewId(anChV[0],one.getText().toString());
             }
@@ -168,8 +162,6 @@ public class Words extends AppCompatActivity implements View.OnClickListener {
             }
         }else if(id == R.id.textAn6){
             TextView one = findViewById(R.id.textAn6);
-            Log.d("CHARAT",""+tA3.getText().charAt(0));
-            Log.d("CHARAT",""+ans[2]);
             if(tA6.getText().charAt(0) == ans[3]){
                 getViewId(anChV[0],one.getText().toString());
             }

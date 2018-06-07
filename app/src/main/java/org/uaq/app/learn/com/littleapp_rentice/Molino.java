@@ -59,7 +59,6 @@ public class Molino extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 Bundle bundle = msg.getData();
                 final Double val = bundle.getDouble("AMP",0.0d);
-                Log.d("VAL",""+val);
                 anIni.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -146,7 +145,6 @@ public class Molino extends AppCompatActivity {
                         }
                     }
                 });
-                Log.d("LOG",""+val);
                 progressBar.setProgress(val.intValue());
             }
         };

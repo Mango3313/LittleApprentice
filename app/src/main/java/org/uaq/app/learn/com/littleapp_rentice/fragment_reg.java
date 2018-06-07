@@ -96,7 +96,6 @@ public class fragment_reg extends Fragment implements View.OnClickListener,Googl
                 corr = edCorr.getText().toString().trim();
                 cont = edContr.getText().toString().trim();
                 rcont = edRContr.getText().toString().trim();
-                Log.d("EMAIL","daft");
                 if(nom.isEmpty() || apell.isEmpty() || corr.isEmpty() || cont.isEmpty() || rcont.isEmpty()){
                     Toast.makeText(getContext(),"Varios campos estan vacios",Toast.LENGTH_SHORT).show();
                 }else{

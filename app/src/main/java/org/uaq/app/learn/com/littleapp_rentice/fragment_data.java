@@ -47,9 +47,7 @@ public class fragment_data extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(currentUser != null){
-                    Log.d("LOGS","Inicio sesion");
                 }else{
-                    Log.d("LOGS","No inicio sesion");
                 }
             }
         };
@@ -59,7 +57,7 @@ public class fragment_data extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_data,container,false);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        //RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         final ArrayList<User> usersPost = new ArrayList<>();
         String uid = currentUser.getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
